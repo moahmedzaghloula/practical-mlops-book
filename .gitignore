@@ -1,0 +1,24 @@
+# Python virtual environment
+.venv/
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Linter and type-checker caches
+.ruff_cache/
+.mypy_cache/
+
+# Packaging artifacts
+build/
+dist/
+*.egg-info/
+
+# Local environment variables and secrets
+.env
+.env.*
