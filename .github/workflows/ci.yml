@@ -1,4 +1,4 @@
-name: Python CI
+name: Practical MLOps CI
 
 on:
   push:
@@ -11,9 +11,14 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Python ${{ matrix.python-version }}
+  chapter-01-python:
+    name: Chapter 1 - Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: chapters/01-introduction-to-mlops/labs/python-ci-scaffold
 
     strategy:
       fail-fast: false
@@ -32,6 +37,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+          cache-dependency-path: chapters/01-introduction-to-mlops/labs/python-ci-scaffold/requirements.txt
 
       - name: Install dependencies
         run: make install
@@ -44,3 +50,28 @@ jobs:
 
       - name: Run tests
         run: make test
+
+  chapter-01-container:
+    name: Chapter 1 - Container Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: chapters/01-introduction-to-mlops/labs/python-ci-scaffold
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Build container image
+        run: |
+          docker build \
+            --tag practical-mlops-ch01:ci \
+            .
+
+      - name: Run container image
+        run: |
+          docker run \
+            --rm \
+            practical-mlops-ch01:ci

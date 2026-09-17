@@ -1,13 +1,15 @@
-# Python virtual environment
+# Python virtual environments
 .venv/
+venv/
 
-# Python bytecode and cache
+# Python bytecode and caches
 __pycache__/
 *.py[cod]
 
 # Test and coverage artifacts
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
 
 # Linter and type-checker caches
@@ -22,3 +24,19 @@ dist/
 # Local environment variables and secrets
 .env
 .env.*
+*.pem
+*.key
+
+# Local editor settings
+.vscode/
+.idea/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Copyrighted book files
+book-pdfs/
+
+# Local and private datasets
+data/raw/
+data/private/
