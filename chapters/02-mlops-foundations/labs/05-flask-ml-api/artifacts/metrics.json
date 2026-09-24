@@ -1,0 +1,16 @@
+{
+  "model_name": "height-weight-linear-regression",
+  "model_version": "1.0.0",
+  "trained_at_utc": "2026-09-24T17:27:27.963998+00:00",
+  "training_rows": 1600,
+  "test_rows": 400,
+  "dataset_sha256": "cdf3f5f76351a65521421630d9e0560f67912645798c713b04e7b0ed0b7723fe",
+  "feature_names": [
+    "height_inches"
+  ],
+  "target_name": "weight_pounds",
+  "metrics": {
+    "mean_absolute_error": 6.2232109252368035,
+    "r2_score": 0.8434712157375966
+  }
+}

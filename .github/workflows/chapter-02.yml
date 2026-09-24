@@ -1,0 +1,67 @@
+name: Chapter 2 Labs
+
+on:
+  push:
+    paths:
+      - "chapters/02-mlops-foundations/**"
+      - ".github/workflows/chapter-02.yml"
+  pull_request:
+    paths:
+      - "chapters/02-mlops-foundations/**"
+      - ".github/workflows/chapter-02.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  optimization:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: chapters/02-mlops-foundations/labs/04-optimization
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: chapters/02-mlops-foundations/labs/04-optimization/requirements.txt
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run quality gates
+        run: make all
+
+  flask-ml-api:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: chapters/02-mlops-foundations/labs/05-flask-ml-api
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: chapters/02-mlops-foundations/labs/05-flask-ml-api/requirements.txt
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Run quality gates
+        run: make all
+
+      - name: Build container image
+        run: docker build --tag chapter-02-ml-api:test .
