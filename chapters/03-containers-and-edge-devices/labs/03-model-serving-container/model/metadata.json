@@ -1,0 +1,13 @@
+{
+  "model_name": "height-to-weight-regressor",
+  "model_version": "1.0.0",
+  "algorithm": "LinearRegression",
+  "feature_names": [
+    "height_cm"
+  ],
+  "target_name": "weight_kg",
+  "training_rows": 500,
+  "training_r2": 0.872327,
+  "dataset_sha256": "e0796c9ac507f9d1f4704676fd862bc6abbbb3c83683eb7042e532012babb64b",
+  "random_seed": 42
+}
