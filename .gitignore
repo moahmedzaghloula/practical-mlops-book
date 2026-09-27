@@ -46,3 +46,6 @@ data/private/
 **/artifacts/
 # Exported container image archives
 *.oci.tar
+# Generated ML and edge artifacts
+**/artifacts/
+*.tflite
