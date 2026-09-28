@@ -1,0 +1,126 @@
+name: Chapter 3 CI
+
+on:
+  push:
+    branches:
+      - main
+      - chapter-03-containers-edge
+    paths:
+      - "chapters/03-containers-and-edge-devices/**"
+      - ".github/workflows/chapter-03.yml"
+  pull_request:
+    paths:
+      - "chapters/03-containers-and-edge-devices/**"
+      - ".github/workflows/chapter-03.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  container-basics:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Build basic container
+        working-directory: chapters/03-containers-and-edge-devices/labs/01-container-basics
+        run: |
+          docker build \
+            --tag ch03-container-basics:ci \
+            .
+
+      - name: Run basic container
+        run: |
+          docker run \
+            --rm \
+            ch03-container-basics:ci
+
+  container-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Lint Dockerfile
+        working-directory: chapters/03-containers-and-edge-devices/labs/02-container-quality-security
+        run: |
+          docker run \
+            --rm \
+            --interactive \
+            hadolint/hadolint:v2.14.0 \
+            < Dockerfile
+
+      - name: Build hardened image
+        working-directory: chapters/03-containers-and-edge-devices/labs/02-container-quality-security
+        run: |
+          docker build \
+            --tag ch03-hardened:ci \
+            .
+
+      - name: Verify non-root user
+        run: |
+          docker run \
+            --rm \
+            ch03-hardened:ci \
+            -c 'import os; assert os.getuid() == 10001'
+
+  model-api:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: chapters/03-containers-and-edge-devices/labs/03-model-serving-container
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            chapters/03-containers-and-edge-devices/labs/03-model-serving-container/requirements*.txt
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Format, lint, and test
+        run: |
+          make format-check
+          make lint
+          make test
+
+      - name: Build model API image
+        run: |
+          docker build \
+            --build-arg MODEL_VERSION=ci \
+            --tag ch03-model-api:ci \
+            .
+
+      - name: Smoke test model API
+        run: |
+          docker run \
+            --detach \
+            --name ch03-model-api \
+            --publish 8000:8000 \
+            ch03-model-api:ci
+
+          for attempt in {1..20}; do
+            if curl \
+              --fail \
+              --silent \
+              http://127.0.0.1:8000/health; then
+              exit 0
+            fi
+
+            sleep 2
+          done
+
+          docker logs ch03-model-api
+          exit 1
