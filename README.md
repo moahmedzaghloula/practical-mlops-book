@@ -2,6 +2,7 @@
 
 [![Chapter 1 CI](https://github.com/moahmedzaghloula/practical-mlops-book/actions/workflows/ci.yml/badge.svg)](https://github.com/moahmedzaghloula/practical-mlops-book/actions/workflows/ci.yml)
 [![Chapter 2 CI](https://github.com/moahmedzaghloula/practical-mlops-book/actions/workflows/chapter-02.yml/badge.svg)](https://github.com/moahmedzaghloula/practical-mlops-book/actions/workflows/chapter-02.yml)
+[![Chapter 3 CI](https://github.com/moahmedzaghloula/practical-mlops-book/actions/workflows/chapter-03.yml/badge.svg)](https://github.com/moahmedzaghloula/practical-mlops-book/actions/workflows/chapter-03.yml)
 
 A chapter-by-chapter, production-oriented study repository for *Practical MLOps*.
 It connects machine learning workflows to the engineering practices used in
@@ -13,6 +14,30 @@ LLMOps.
 
 > This repository contains original study notes and hands-on implementations.
 > It does not redistribute the book or its copyrighted content.
+
+## Repository at a Glance
+
+| Area | Implementation |
+|---|---|
+| Host platform | Fedora Linux |
+| Local container engine | Rootless Podman |
+| Primary languages | Python and Bash |
+| Automation | GNU Make and GitHub Actions |
+| Quality gates | Black, Pylint/Ruff, Pytest, coverage, Hadolint, and Grype |
+| ML delivery | Versioned artifacts, HTTP APIs, containers, and edge formats |
+| Current study scope | Chapters 1–3 complete |
+
+## Documentation Map
+
+- [Learning approach](#learning-approach)
+- [Study progress](#study-progress)
+- [Repository structure](#repository-structure)
+- [Labs and study coverage](#labs-and-study-coverage)
+- [Fedora prerequisites](#prerequisites)
+- [Chapter 3 container and edge labs](#running-the-chapter-3-container-labs)
+- [Engineering standards](#engineering-standards)
+- [DevOps-to-MLOps mapping](#mlops-to-devops-mapping)
+- [Roadmap toward LLMOps](#roadmap-toward-llmops)
 
 ## Learning Approach
 
@@ -32,11 +57,11 @@ Each chapter follows the same workflow:
 |---|---|---|---:|
 | [01](chapters/01-introduction-to-mlops/) | Introduction to MLOps | Complete | 1 |
 | [02](chapters/02-mlops-foundations/) | MLOps Foundations | Complete | 5 |
-| [03](chapters/03-containers-and-edge-devices/) | MLOps for Containers and Edge Devices | In progress | 5 |
+| [03](chapters/03-containers-and-edge-devices/) | MLOps for Containers and Edge Devices | Complete | 5 |
 
-`In progress` means the chapter implementation is being built and verified lab
-by lab. A chapter is marked `Complete` only after its required local checks and
-GitHub Actions workflows pass.
+`Complete` means the chapter's planned hands-on scope has been implemented and
+its available local quality gates have passed. Hardware-dependent validation is
+called out separately when specialized equipment is optional.
 
 ## Repository Structure
 
@@ -92,7 +117,7 @@ GitHub Actions workflows pass.
 - Flask inference API with liveness and readiness endpoints
 - API tests, Gunicorn serving, non-root containers, and CI
 
-### Chapter 3 — In Progress
+### Chapter 3
 
 - Fedora-native, rootless container workflows with Podman
 - image layers, tags, digests, OCI labels, and registry concepts
@@ -271,10 +296,9 @@ podman rm ch03-model-api
 ## Edge Lab Scope
 
 The CPU edge-inference lab is reproducible without specialized hardware. The
-Coral Edge TPU lab is explicitly marked as conditional because it depends on
-legacy upstream packages, a compatible compiler, and optional USB hardware. A
-legacy upstream failure is documented as a compatibility constraint rather
-than hidden with an unsupported host modification.
+Edge TPU compiler workflow is complete; execution against a physical Coral USB
+device remains hardware-dependent. Legacy upstream compatibility constraints
+are documented instead of being hidden with unsupported host modifications.
 
 ## Engineering Standards
 
