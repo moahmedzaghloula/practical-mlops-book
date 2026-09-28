@@ -44,3 +44,8 @@ data/private/
 
 # Generated model artifacts and reports
 **/artifacts/
+# Exported container image archives
+*.oci.tar
+# Generated ML and edge artifacts
+**/artifacts/
+*.tflite
